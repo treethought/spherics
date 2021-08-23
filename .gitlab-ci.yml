@@ -1,0 +1,17 @@
+stages:
+  - deploy
+
+deploy test:
+  stage: deploy
+  script:
+    - echo $KUBE_URL
+    - kubectl get pods
+
+
+deploy gitea:
+  stage: deploy
+  image: dtzar/helm-kubectl
+  script:
+    - echo $KUBE_URL
+    - apk add make
+    - make gitea
