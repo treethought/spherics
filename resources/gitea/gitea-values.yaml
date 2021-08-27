@@ -142,8 +142,8 @@ signing:
 gitea:
   admin:
     existingSecret: gitea-admin-secret
-    username: gitea_admin
-    email: "gitea@treethought.com"
+    # username: gitea_admin
+    # email: "email@example.com"
 
   metrics:
     enabled: false
