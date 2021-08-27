@@ -1,13 +1,14 @@
 stages:
   - deploy
 
-image: dwdraju/gke-kubectl-docker
+# image: dwdraju/gke-kubectl-docker
+image: alpine/k8s:1.16.15
 
 before_script:
     - apk add make
-    - gcloud auth activate-service-account --key-file $GCP_SERVICE_ACCOUNT_KEY
-    - gcloud config set project $GCP_PROJECT_ID
-    - gcloud container clusters get-credentials $CLUSTER_NAME --zone $CLUSTER_ZONE --project $GCP_PROJECT_ID
+#     - gcloud auth activate-service-account --key-file $GCP_SERVICE_ACCOUNT_KEY
+#     - gcloud config set project $GCP_PROJECT_ID
+#     - gcloud container clusters get-credentials $CLUSTER_NAME --zone $CLUSTER_ZONE --project $GCP_PROJECT_ID
 
 .install-base:
   script:
@@ -21,5 +22,9 @@ deploy test:
 deploy gitea:
   stage: deploy
   extends: .install-base
+  environment:
+    name: space
   script:
+    - echo $KUBE_CONFIG
+    - echo $KUBE_TOKEN
     - make gitea
