@@ -6,7 +6,7 @@ SHELL := /bin/bash
 nginx:
 	helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 	helm repo update
-	helm install nginx ingress-nginx/ingress-nginx \
+	helm upgrade --install nginx ingress-nginx/ingress-nginx \
 		--namespace nginx \
 		--set rbac.create=true \
 		--set controller.publishService.enabled=true
@@ -14,7 +14,7 @@ nginx:
 cert-manager:
 	helm repo add jetstack https://charts.jetstack.io
 	helm repo update
-	helm install \
+	helm upgrade --install \
 		cert-manager jetstack/cert-manager \
 		--namespace cert-manager \
 		--create-namespace \
@@ -22,6 +22,20 @@ cert-manager:
 		--set installCRDs=true
 	kubectl apply -f resources/cert-manager/prod-issuer.yaml
 
+	
+nextcloud:
+	helm repo add nextcloud https://nextcloud.github.io/helm/
+	helm repo update
+	kubectl create ns nextcloud || true
+	helm upgrade --install \
+		-f resources/nextcloud/values.yaml \
+		--set nextcloud.username=${NEXTCLOUD_ADMIN_USERNAME} \
+		--set nextcloud.password=${NEXTCLOUD_ADMIN_PASSOWORD} \
+		--set postgresql.postgresqlPassword=${NEXTCLOUD_POSTGRES_PASSWORD} \
+		--set redis.password=${NEXTCLOUD_REDIS_PASSWORD} \
+		--set externalDatabase.password=${NEXTCLOUD_POSTGRES_PASSWORD} \
+		-n nextcloud \
+		nextcloud nextcloud/nextcloud
 gitea:
 	kubectl create secret generic -n gitea gitea-admin-secret \
 		--from-literal=username=${GITEA_ADMIN_USERNAME} \

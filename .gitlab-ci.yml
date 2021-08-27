@@ -1,30 +1,30 @@
 stages:
+  - base
   - deploy
 
-# image: dwdraju/gke-kubectl-docker
 image: alpine/k8s:1.16.15
 
 before_script:
     - apk add make
-#     - gcloud auth activate-service-account --key-file $GCP_SERVICE_ACCOUNT_KEY
-#     - gcloud config set project $GCP_PROJECT_ID
-#     - gcloud container clusters get-credentials $CLUSTER_NAME --zone $CLUSTER_ZONE --project $GCP_PROJECT_ID
 
-.install-base:
-  script:
-    - make nginx cert-manager
-
-deploy test:
-  stage: deploy
-  script:
-    - kubectl get pods
-
-deploy gitea:
-  stage: deploy
-  extends: .install-base
+install base:
+  stage: base
   environment:
     name: space
   script:
-    - echo $KUBE_CONFIG
-    - echo $KUBE_TOKEN
+    - make nginx cert-manager
+
+deploy gitea:
+  stage: deploy
+  environment:
+    name: space
+  script:
     - make gitea
+
+deploy nextcloud:
+  stage: deploy
+  environment:
+    name: space
+  script:
+    - make nextcloud
+
