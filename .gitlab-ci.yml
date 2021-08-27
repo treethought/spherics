@@ -1,17 +1,25 @@
 stages:
   - deploy
 
+image: dwdraju/gke-kubectl-docker
+
+before_script:
+    - apk add make
+    - gcloud auth activate-service-account --key-file $GCP_SERVICE_ACCOUNT_KEY
+    - gcloud config set project $GCP_PROJECT_ID
+    - gcloud container clusters get-credentials $CLUSTER_NAME --zone $CLUSTER_ZONE --project $GCP_PROJECT_ID
+
+.install-base:
+  script:
+    - make nginx cert-manager
+
 deploy test:
   stage: deploy
   script:
-    - echo $KUBE_URL
     - kubectl get pods
-
 
 deploy gitea:
   stage: deploy
-  image: dtzar/helm-kubectl
+  extends: .install-base
   script:
-    - echo $KUBE_URL
-    - apk add make
     - make gitea

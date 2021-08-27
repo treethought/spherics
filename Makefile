@@ -20,8 +20,6 @@ cert-manager:
 		--create-namespace \
 		--version v1.5.0 \
 		--set installCRDs=true
-
-issuer:
 	kubectl apply -f resources/cert-manager/prod-issuer.yaml
 
 gitea:
