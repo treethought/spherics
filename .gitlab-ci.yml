@@ -2,29 +2,28 @@ stages:
   - base
   - deploy
 
-image: alpine/k8s:1.16.15
+# image: alpine/k8s:1.16.15
 
-before_script:
-    - apk add make
+# before_script:
+#     - apk add make
 
-install base:
-  stage: base
-  environment:
-    name: space
-  script:
-    - make nginx cert-manager
+# install base:
+#   stage: base
+#   environment:
+#     name: space
+#   script:
+#     - make nginx cert-manager
 
-deploy gitea:
-  stage: deploy
-  environment:
-    name: space/gitea
-  script:
-    - make gitea
+# deploy gitea:
+#   stage: deploy
+#   environment:
+#     name: space/gitea
+#   script:
+#     - make gitea
 
-deploy nextcloud:
-  stage: deploy
-  environment:
-    name: space/nextcloud
-  script:
-    - make nextcloud
-
+# deploy nextcloud:
+#   stage: deploy
+#   environment:
+#     name: space/nextcloud
+#   script:
+#     - make nextcloud
