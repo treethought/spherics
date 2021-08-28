@@ -17,14 +17,14 @@ install base:
 deploy gitea:
   stage: deploy
   environment:
-    name: space
+    name: space/gitea
   script:
     - make gitea
 
 deploy nextcloud:
   stage: deploy
   environment:
-    name: space
+    name: space/nextcloud
   script:
     - make nextcloud
 
