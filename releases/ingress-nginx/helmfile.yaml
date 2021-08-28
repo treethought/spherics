@@ -1,0 +1,35 @@
+bases:
+- environments.yaml
+---
+repositories:
+# Official ingress-nginx chart rep
+- name: "ingress-nginx"
+  url: https://kubernetes.github.io/ingress-nginx
+
+
+releases:
+# https://github.com/kubernetes/ingress-nginx/tree/master/charts/ingress-nginx
+# https://github.com/kubernetes/ingress-nginx/blob/master/charts/ingress-nginx/values.yaml
+- name: "nginx"
+  namespace: "nginx"
+  labels:
+    chart: "ingress-nginx"
+    repo: "stable"
+    component: "ingress"
+    namespace: "nginx"
+    vendor: "kubernetes"
+  chart: "ingress-nginx/ingress-nginx"
+  version: {{ .Values.chart_version | quote }}
+  wait: true
+  # It can take a long time to drain all the connections, so
+  # wait up to 20 minutes
+  timeout: 1200
+  atomic: true
+  cleanupOnFail: true
+  installed: {{ .Values.installed }}
+  values:
+  # see https://github.com/cloudposse/helmfiles/blob/master/releases/ingress-nginx/helmfile.yaml for more complete values
+  - rbac: 
+      create: true
+    publishService:
+      enabled: true

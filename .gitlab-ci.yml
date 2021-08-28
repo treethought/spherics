@@ -1,17 +1,50 @@
 stages:
+  - diff
   - deploy
 
-deploy test:
-  stage: deploy
+image: quay.io/roboll/helmfile:helm3-v0.140.0
+
+# TODO better workaround for environment limitation
+# currently need it set for cluster access
+# but jobs cannot have same environment
+
+diff:
+  stage: diff
+  environment:
+    name: space
   script:
-    - echo $KUBE_URL
-    - kubectl get pods
+    - helmfile lint
+    - helmfile diff
+
+deploy:
+  stage: deploy
+  environment:
+    name: space
+  when: manual
+  script:
+    - helmfile apply
 
 
-deploy gitea:
-  stage: deploy
-  image: dtzar/helm-kubectl
-  script:
-    - echo $KUBE_URL
-    - apk add make
-    - make gitea
+# before_script:
+#     - apk add make
+
+# install base:
+#   stage: base
+#   environment:
+#     name: space
+#   script:
+#     - make nginx cert-manager
+
+# deploy gitea:
+#   stage: deploy
+#   environment:
+#     name: space/gitea
+#   script:
+#     - make gitea
+
+# deploy nextcloud:
+#   stage: deploy
+#   environment:
+#     name: space/nextcloud
+#   script:
+#     - make nextcloud
