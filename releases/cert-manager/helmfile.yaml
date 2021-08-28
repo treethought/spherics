@@ -1,0 +1,129 @@
+bases:
+- environments.yaml
+---
+repositories:
+  # Add the Jetstack Helm repository
+  - name: "jetstack"
+    url: "https://charts.jetstack.io"
+    # Kubernetes incubator repo of helm charts
+  - name: "kubernetes-incubator"
+    url: "https://charts.helm.sh/incubator"
+
+releases:
+
+# cert-manager - Automatic Let's Encrypt for Ingress.
+# Also provides local CA for issuing locally valid TLS certificates.
+# https://hub.helm.sh/charts/jetstack/cert-manager
+# https://github.com/jetstack/cert-manager/blob/v0.16.1/deploy/charts/cert-manager/values.yaml
+# https://cert-manager.io/docs/installation/kubernetes/
+
+- name: "cert-manager"
+  namespace: "cert-manager"
+  labels:
+    chart: "cert-manager"
+    repo: "jetstack"
+    component: "cert-manager"
+    namespace: "cert-manager"
+    vendor: "jetstack"
+  chart: "jetstack/cert-manager"
+  version: {{ .Values.chart_version | quote }}
+  wait: true
+  timeout: 300
+  atomic: true
+  cleanupOnFail: true
+  createNamespace: true
+  installed: {{ .Values.installed }}
+
+
+  values:
+    - fullnameOverride: cert-manager
+      rbac:
+        create: true
+      # According to cert-manager docs, install_crds does not work with helm 3.3
+      installCRDs: true
+      # ingressShim:
+      #   defaultIssuerName: {{ .Values.ingress_shim_default_issuer_name | quote }}
+      #   defaultIssuerKind: {{ .Values.ingress_shim_default_issuer_kind | quote }}
+        # defaultACMEChallengeType: ""
+        # defaultACMEDNS01ChallengeProvider: ""
+      # serviceAccount:
+      #   create: true
+      #   name: "cert-manager"
+      # securityContext:
+      #   enabled: true
+      #   fsGroup: 1001
+      #   runAsGroup: 1001
+      prometheus:
+        enabled: {{ .Values.metrics_enabled }}
+        servicemonitor:
+          enabled: {{ .Values.metrics_enabled }}
+          prometheusInstance: default
+          targetPort: 9402
+          path: /metrics
+          interval: 60s
+          scrapeTimeout: 30s
+      webhook:
+        enabled: true
+      cainjector:
+        enabled: true
+      # resources:
+      #   limits:
+      #     cpu: {{ .Values.limit_cpu | default "" | quote}}
+      #     memory: {{ .Values.limit_memory | default "" | quote }}
+      #   requests:
+      #     cpu: {{ .Values.request_cpu | default "" | quote }}
+      #     memory: {{ .Values.request_memory | default "" | quote }}
+
+- name: 'cert-manager-issuers'
+  needs: ['cert-manager/cert-manager']
+  chart: "kubernetes-incubator/raw"
+  namespace: "cert-manager"
+  labels:
+    component: "cert-manager"
+    namespace: "cert-manager"
+  version: {{ .Values.cert_manager_issuers_chart_version | quote }}
+  wait: true
+  timeout: 120
+  atomic: true
+  cleanupOnFail: true
+  # installed: {{ .Values.installed }}
+  disableValidation: true
+  values:
+  - resources:
+    - apiVersion: cert-manager.io/v1
+      kind: ClusterIssuer
+      metadata:
+        name: letsencrypt-staging
+      spec:
+        acme:
+          # The ACME server URL
+          server: https://acme-staging-v02.api.letsencrypt.org/directory
+          # Email address used for ACME registration
+          email: {{ .Values.support_email | quote }}
+          # Name of a secret used to store the ACME account private key
+          privateKeySecretRef:
+            name: letsencrypt-staging
+          solvers:
+            # Enable the HTTP-01 challenge provider
+            - http01:
+                ingress:
+                  class: nginx
+
+    - apiVersion: cert-manager.io/v1
+      kind: ClusterIssuer
+      metadata:
+        name: letsencrypt-prod
+      spec:
+        acme:
+          # The ACME server URL
+          server: https://acme-v02.api.letsencrypt.org/directory
+          # Email address used for ACME registration
+          email: {{ .Values.support_email | quote }}
+          # Name of a secret used to store the ACME account private key
+          privateKeySecretRef:
+            name: letsencrypt-prod
+          solvers:
+            # Enable the HTTP-01 challenge provider
+            - http01:
+                ingress:
+                  class: nginx

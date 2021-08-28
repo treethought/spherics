@@ -1,0 +1,23 @@
+# These default values can be overridden per environment in config/<env>.yaml files
+
+chart_version: "v1.5.0"
+
+installed: true
+
+cert_manager_issuers_chart_version: "0.2.3"
+
+limit_cpu: "200m"
+
+limit_memory: "256Mi"
+
+request_cpu: "100m"
+
+request_memory: "128Mi"
+
+metrics_enabled: false
+
+ingress_shim_default_issuer_kind: "ClusterIssuer"
+
+ingress_shim_default_issuer_name: "letsencrypt-prod"
+
+support_email: "cpsweene@gmail.com"
