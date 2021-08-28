@@ -1,0 +1,11 @@
+# These default values can be overridden per environment in config/<env>.yaml files
+
+chart_version: "10.2.23"
+
+installed: true
+
+user:
+  password: "admin"
+  email: "admin@example.com"
+  username: "admin"
+

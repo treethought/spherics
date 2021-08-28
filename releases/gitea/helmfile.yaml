@@ -7,11 +7,11 @@ repositories:
 
 releases:
 
-# cert-manager - Automatic Let's Encrypt for Ingress.
-# Also provides local CA for issuing locally valid TLS certificates.
-# https://hub.helm.sh/charts/jetstack/cert-manager
-# https://github.com/jetstack/cert-manager/blob/v0.16.1/deploy/charts/cert-manager/values.yaml
-# https://cert-manager.io/docs/installation/kubernetes/
+# gitea - Gitea is a painless self-hosted Git service. It is similar to GitHub, Bitbucket, and GitLab.
+# Gitea is a fork of Gogs. See the Gitea Announcement blog post to read about the justification for a fork.
+# https://docs.gitea.io
+# https://docs.gitea.io/en-us/install-on-kubernetes/
+# https://gitea.com/gitea/helm-chart/src/branch/master/values.yaml
 
 - name: "gitea"
   namespace: "gitea"

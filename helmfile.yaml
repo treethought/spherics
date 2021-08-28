@@ -62,4 +62,10 @@ helmfiles:
           username: gitea
           password: {{ requiredEnv "GITEA_DB_PASSWORD"}}
 
-
+  # owncloud:
+  - path: releases/owncloud/helmfile.yaml
+    values:
+      - user:
+          email: {{ requiredEnv "OWNCLOUD_ADMIN_EMAIL"}}
+          username: {{ requiredEnv "OWNCLOUD_ADMIN_USERNAME"}}
+          password: {{ requiredEnv "OWNCLOUD_ADMIN_PASSOWORD"}}
