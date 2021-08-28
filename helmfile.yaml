@@ -74,3 +74,17 @@ helmfiles:
           rootPassword: {{ requiredEnv "OWNCLOUD_DB_ROOTPW"}}
           username: {{ requiredEnv "OWNCLOUD_DB_USERNAME"}}
           password: {{ requiredEnv "OWNCLOUD_DB_PASSWORD"}}
+
+  # nextcloud:
+  - path: releases/nextcloud/helmfile.yaml
+    values:
+      - host: nextcloud.spherics.space
+      - user:
+          username: {{ requiredEnv "NEXTCLOUD_ADMIN_USERNAME"}}
+          password: {{ requiredEnv "NEXTCLOUD_ADMIN_PASSWORD"}}
+        db:
+          username: nextcloud
+          password: {{ requiredEnv "NEXTCLOUD_POSTGRES_PASSWORD"}}
+
+        redis:
+          password: { requiredEnv "NEXTCLOUD_REDIS_PASSWORD"}

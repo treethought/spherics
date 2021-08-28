@@ -1,18 +1,18 @@
 # These default values can be overridden per environment in config/<env>.yaml files
 
-chart_version: "10.2.23"
-
+chart_version: "2.8.1"
 installed: true
 
-host: "owncloud.example.com"
+host: "nextcloud.example.com"
 
 user:
   password: "admin"
-  email: "admin@example.com"
   username: "admin"
 
 db:
-  rootPassword: ""
-  username: "owncloud"
-  password: "owncloud"
+  username: "nextcloud"
+  password: "nextcloud"
 
+redis:
+  enabled: true
+  password: "redis"
