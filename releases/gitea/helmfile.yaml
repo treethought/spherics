@@ -36,9 +36,7 @@ releases:
       args:
         - "-c"
         - >-
-          kubectl create secret generic -n gitea gitea-admin-secret \
-            --from-literal=username="{{`{{ .Values.gitea.admin.username }}`}}" \
-            --from-literal=password="{{`{{ .Values.gitea.admin.password }}`}}" || true;
+          kubectl create secret generic -n gitea gitea-admin-secret --from-literal=username="{{`{{ .Values.gitea.admin.username }}`}}" --from-literal=password="{{`{{ .Values.gitea.admin.password }}`}}" || true;
 
 
   values:
