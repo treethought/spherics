@@ -1,5 +1,5 @@
 # Path to alternative helm binary (--helm-binary)
-helmBinary: /usr/local/bin/helm
+# helmBinary: /usr/local/bin/helm
 
 # Default values to set for args along with dedicated keys that can be set by contributors, cli args take precedence over these.
 # In other words, unset values results in no flags passed to helm.
@@ -14,7 +14,7 @@ helmDefaults:
   # if set and --wait enabled, will wait until all Jobs have been completed before marking the release as successful. It will wait for as long as --timeout (default false, Implemented in Helm3.5)
   waitForJobs: true
   # time in seconds to wait for any individual Kubernetes operation (like Jobs for hooks, and waits on pod/pvc/svc/deployment readiness) (default 300)
-  timeout: 600
+  timeout: 120
   # performs pods restart for the resource if applicable (default false)
   recreatePods: true
   # forces resource update through delete/recreate if needed (default false)
@@ -47,7 +47,7 @@ helmfiles:
       - support_email: {{ requiredEnv "CERT_MANAGER_EMAIL"}}
 
   # gitea:
-  # TODO: refactor out to normal vlaues file?
+  # TODO: refactor out to normal values file?
   - path: releases/gitea/helmfile.yaml
     values:
       - host: git.spherics.dev
