@@ -50,16 +50,16 @@ helmfiles:
   # TODO: refactor out to normal vlaues file?
   - path: releases/gitea/helmfile.yaml
     values:
-      host: git.spherics.dev
-      gitea:
-        appName: git.spherics
-        admin:
-          username: {{ requiredEnv "GITEA_ADMIN_USERNAME"}}
-          password: {{ requiredEnv "GITEA_ADMIN_PASSWORD"}}
-          email: {{ requiredEnv "GITEA_ADMIN_EMAIL"}}
+      - host: git.spherics.dev
+        gitea:
+          appName: git.spherics
+          admin:
+            username: {{ requiredEnv "GITEA_ADMIN_USERNAME"}}
+            password: {{ requiredEnv "GITEA_ADMIN_PASSWORD"}}
+            email: {{ requiredEnv "GITEA_ADMIN_EMAIL"}}
 
-      db:
-        username: gitea
-        password: {{ requiredEnv "GITEA_DB_PASSWORD"}}
+        db:
+          username: gitea
+          password: {{ requiredEnv "GITEA_DB_PASSWORD"}}
 
 
