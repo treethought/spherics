@@ -1,0 +1,88 @@
+bases:
+- environments.yaml
+---
+repositories:
+- name: gitea-charts
+  url: https://dl.gitea.io/charts/
+
+releases:
+
+# cert-manager - Automatic Let's Encrypt for Ingress.
+# Also provides local CA for issuing locally valid TLS certificates.
+# https://hub.helm.sh/charts/jetstack/cert-manager
+# https://github.com/jetstack/cert-manager/blob/v0.16.1/deploy/charts/cert-manager/values.yaml
+# https://cert-manager.io/docs/installation/kubernetes/
+
+- name: "gitea"
+  namespace: "gitea"
+  labels:
+    chart: "gitea"
+    repo: "gitea"
+    component: "gitea"
+    namespace: "gitea"
+    vendor: "gitea"
+  chart: "gitea-charts/gitea"
+  version: {{ .Values.chart_version | quote }}
+  wait: true
+  timeout: 300
+  atomic: true
+  cleanupOnFail: true
+  createNamespace: true
+  installed: {{ .Values.installed }}
+  hooks:
+    - events: ["presync"]
+      showlogs: true
+      command: "/bin/sh"
+      args:
+        - "-c"
+        - >-
+          kubectl create secret generic -n gitea gitea-admin-secret \
+            --from-literal=username="{{`{{ .Values.gitea.admin.username }}`}}" \
+            --from-literal=password="{{`{{ .Values.gitea.admin.password }}`}}" || true;
+
+
+  values:
+    - gitea:
+        admin:
+          existingSecret: gitea-admin-secret
+          email: {{ .Values.gitea.admin.email | quote }}
+        config: 
+          APP_NAME: {{ .Values.gitea.appName | quote}}
+          ui:
+            DEFAULT_THEME: "arc-green"
+        database:
+          builtIn:
+            postgresql:
+              enabled: true
+      postgresql:
+        global:
+          postgresql:
+            postgresqlDatabase: gitea
+            postgresqlUsername: {{ .Values.db.username | quote }}
+            postgresqlPassword: {{ .Values.db.password | quote }}
+            servicePort: 5432
+      ingress:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: nginx # TODO refactor to helmfile defaults
+          cert-manager.io/cluster-issuer: "letsencrypt-prod"
+          kubernetes.io/tls-acme: "true"
+        hosts:
+          - host: {{ .Values.host | quote }}
+            paths:
+              - path: /
+                pathType: Prefix
+        tls: 
+        - secretName: {{ printf "%s-tls" .Values.host | quote }}
+          hosts:
+            - {{ .Values.host | quote }}
+
+      persistence:
+        enabled: true
+        # existingClaim:
+        size: 10Gi
+        accessModes:
+          - ReadWriteOnce
+        labels: {}
+        annotations: {}
+        # storageClass:

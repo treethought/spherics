@@ -1,0 +1,19 @@
+# These default values can be overridden per environment in config/<env>.yaml files
+
+chart_version: "4.0.3"
+
+installed: true
+
+host: git.example.com
+
+gitea:
+  appName: git.spherics.dev
+  admin:
+    username: admin
+    password: admin
+    email: admin@example.com
+
+db:
+  password: gitea
+  username: gitea
+
