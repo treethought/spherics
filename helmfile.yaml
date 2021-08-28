@@ -68,4 +68,4 @@ helmfiles:
       - user:
           email: {{ requiredEnv "OWNCLOUD_ADMIN_EMAIL"}}
           username: {{ requiredEnv "OWNCLOUD_ADMIN_USERNAME"}}
-          password: {{ requiredEnv "OWNCLOUD_ADMIN_PASSOWORD"}}
+          password: {{ requiredEnv "OWNCLOUD_ADMIN_PASSWORD"}}

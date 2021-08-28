@@ -20,15 +20,15 @@ releases:
       namespace: "owncloud"
       vendor: "bitnami"
     chart: "bitnami/owncloud"
-    version: { { .Values.chart_version | quote } }
+    version: {{ .Values.chart_version | quote }}
     wait: true
     timeout: 300
     atomic: true
     cleanupOnFail: true
     createNamespace: true
-    installed: { { .Values.installed } }
+    installed: {{ .Values.installed }}
 
     values:
-      - owncloudPassword: { { .Values.user.password | quote } }
-        owncloudEmail: { { .Values.user.email | quote } }
-        owncloudUsername: { { .Values.user.username | quote } }
+      - owncloudPassword: {{ .Values.user.password | quote }}
+        owncloudEmail: {{ .Values.user.email | quote }}
+        owncloudUsername: {{ .Values.user.username | quote }}
