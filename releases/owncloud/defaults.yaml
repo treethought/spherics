@@ -4,8 +4,15 @@ chart_version: "10.2.23"
 
 installed: true
 
+host: "nextcloud.example.com"
+
 user:
   password: "admin"
   email: "admin@example.com"
   username: "admin"
+
+db:
+  rootPassword: ""
+  username: "owncloud"
+  password: "owncloud"
 

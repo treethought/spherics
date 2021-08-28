@@ -32,3 +32,24 @@ releases:
       - owncloudPassword: {{ .Values.user.password | quote }}
         owncloudEmail: {{ .Values.user.email | quote }}
         owncloudUsername: {{ .Values.user.username | quote }}
+        owncloudHost: {{ .Values.host | quote }}
+        ingress:
+          enabled: true
+          certManager: true
+          hostname: {{ .Values.host | quote }}
+          pathType: ImplementationSpecific
+          annotations: 
+            kubernetes.io/ingress.class: nginx
+          tls: true
+        metrics:
+          enabled: false
+        mariadb:
+          enabled: true
+          auth:
+            rootPassword: {{ .Values.db.rootPassword | quote}}
+            database: owncloud
+            username: {{ .Values.db.username}}
+            password: {{ .Values.db.password}}
+          primary:
+            persistence:
+              enabled: true

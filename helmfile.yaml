@@ -65,7 +65,12 @@ helmfiles:
   # owncloud:
   - path: releases/owncloud/helmfile.yaml
     values:
+      - host: owncloud.spherics.space
       - user:
           email: {{ requiredEnv "OWNCLOUD_ADMIN_EMAIL"}}
           username: {{ requiredEnv "OWNCLOUD_ADMIN_USERNAME"}}
           password: {{ requiredEnv "OWNCLOUD_ADMIN_PASSWORD"}}
+        db:
+          rootPassword: {{ requiredEnv "OWNCLOUD_DB_ROOTPW"}}
+          username: {{ requiredEnv "OWNCLOUD_DB_USERNAME"}}
+          password: {{ requiredEnv "OWNCLOUD_DB_PASSWORD"}}
