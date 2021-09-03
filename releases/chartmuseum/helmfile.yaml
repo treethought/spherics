@@ -54,12 +54,8 @@ releases:
           cert-manager.io/cluster-issuer: "letsencrypt-prod"
           kubernetes.io/tls-acme: "true"
         hosts:
-          - host: {{ .Values.host | quote }}
-            paths:
-              - path: /
-                pathType: Prefix
-        tls: 
-        - secretName: {{ printf "%s-tls" .Values.host | quote }}
-          hosts:
-            - {{ .Values.host | quote }}
+          - name: {{ .Values.host | quote }}
+            path: "/"
+            tls: true
+            tlsSecret: {{ printf "%s-tls" .Values.host | quote }}
 
