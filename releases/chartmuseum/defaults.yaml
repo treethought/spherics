@@ -1,0 +1,15 @@
+# These default values can be overridden per environment in config/<env>.yaml files
+
+chart_version: "3.1.0"
+
+installed: true
+
+host: charts.example.com
+
+gcp:
+  bucket: "my-bucket"
+  serviceAccountFile: service-account.json
+
+auth:
+  user: "curator"
+  password: "mypassword"

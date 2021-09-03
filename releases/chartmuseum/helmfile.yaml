@@ -1,0 +1,65 @@
+bases:
+- environments.yaml
+---
+repositories:
+- name: chartmuseum
+  url: https://chartmuseum.github.io/charts
+
+releases:
+
+- name: "chartmuseum"
+  namespace: "chartmuseum"
+  labels:
+    chart: "chartmuseum"
+    repo: "chartmuseum"
+    component: "chartmuseum"
+    namespace: "chartmuseum"
+    vendor: "chartmuseum"
+  chart: "chartmuseum/chartmuseum"
+  version: {{ .Values.chart_version | quote }}
+  wait: true
+  timeout: 300
+  atomic: true
+  cleanupOnFail: true
+  createNamespace: true
+  installed: {{ .Values.installed }}
+  hooks:
+    - events: ["presync"]
+      showlogs: true
+      command: "/bin/sh"
+      args:
+        - "-c"
+        - >-
+          kubectl create secret generic -n chartmuseum chartmuseum-secret --from-file=credentials.json="{{ `{{ .Values.gcp.serviceAccountFile }}`}}"
+
+  values:
+    - env:
+        open:
+          STORAGE: google
+          STORAGE_GOOGLE_BUCKET: {{ .Values.gcp.bucket }}
+          STORAGE_GOOGLE_PREFIX:
+        secret:
+          BASIC_AUTH_USER: {{ .Values.auth.user }}
+          BASIC_AUTH_PASS: {{ .Values.auth.password }}
+      gcp:
+        secret:
+          enabled: true
+          name: chartmuseum-secret
+          key: credentials.json
+
+      ingress:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: nginx # TODO refactor to helmfile defaults
+          cert-manager.io/cluster-issuer: "letsencrypt-prod"
+          kubernetes.io/tls-acme: "true"
+        hosts:
+          - host: {{ .Values.host | quote }}
+            paths:
+              - path: /
+                pathType: Prefix
+        tls: 
+        - secretName: {{ printf "%s-tls" .Values.host | quote }}
+          hosts:
+            - {{ .Values.host | quote }}
+

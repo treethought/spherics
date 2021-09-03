@@ -89,10 +89,21 @@ helmfiles:
         redis:
           password: { requiredEnv "NEXTCLOUD_REDIS_PASSWORD"}
 
-  # diaspora:
-  - path: releases/diaspora/helmfile.yaml
+  # chartmuseum
+  - path: releases/chartmuseum/helmfile.yaml
     values:
-      - host: pod.spherics.space
-      - db:
-          username: diaspora
-          password: {{ requiredEnv "DIASPORA_POSTGRES_PASSWORD"}}
+      - host: charts.spherics.space
+        gcp:
+          bucket: spherics-charts
+          serviceAccountFile: {{ requiredEnv "CHARTMUSEUM_SERVICE_ACCOUNT" }}
+        auth:
+          user: {{ requiredEnv "CHARTMUSEUM_USERNAME"}}
+          password: {{ requiredEnv "CHARTMUSEUM_PASSWORD" }}
+
+  # diaspora:
+  # - path: releases/diaspora/helmfile.yaml
+  #   values:
+  #     - host: pod.spherics.space
+  #     - db:
+  #         username: diaspora
+  #         password: {{ requiredEnv "DIASPORA_POSTGRES_PASSWORD"}}
