@@ -30,7 +30,7 @@ releases:
       args:
         - "-c"
         - >-
-          kubectl create secret generic -n chartmuseum chartmuseum-secret --from-file=credentials.json="{{ `{{ .Values.gcp.serviceAccountFile }}`}}"
+          kubectl create secret generic -n chartmuseum chartmuseum-secret --from-file=credentials.json="{{ `{{ .Values.gcp.serviceAccountFile }}`}}" || true
 
   values:
     - env:
@@ -38,6 +38,7 @@ releases:
           STORAGE: google
           STORAGE_GOOGLE_BUCKET: {{ .Values.gcp.bucket }}
           STORAGE_GOOGLE_PREFIX:
+          DIASABLE_API: false
         secret:
           BASIC_AUTH_USER: {{ .Values.auth.user }}
           BASIC_AUTH_PASS: {{ .Values.auth.password }}
