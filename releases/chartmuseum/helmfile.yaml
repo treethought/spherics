@@ -38,7 +38,7 @@ releases:
           STORAGE: google
           STORAGE_GOOGLE_BUCKET: {{ .Values.gcp.bucket }}
           STORAGE_GOOGLE_PREFIX:
-          DIASABLE_API: false
+          DISABLE_API: false
           AUTH_ANONYMOUS_GET: true
         secret:
           BASIC_AUTH_USER: {{ .Values.auth.user }}

@@ -100,7 +100,7 @@ helmfiles:
           user: {{ requiredEnv "CHARTMUSEUM_USERNAME"}}
           password: {{ requiredEnv "CHARTMUSEUM_PASSWORD" }}
 
-  diaspora:
+  # diaspora:
   - path: releases/diaspora/helmfile.yaml
     values:
       - host: pod.spherics.space
