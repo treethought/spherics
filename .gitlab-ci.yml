@@ -13,6 +13,8 @@ diff:
   environment:
     name: space
   script:
+    - helmfile repos
+    - helmfile deps
     - helmfile lint
     - helmfile diff
 
