@@ -29,6 +29,10 @@ releases:
 
     values:
       - host: {{ .Values.host }}
+        diaspora:
+          configuration:
+            settings:
+              enable_registrations: false
         postgresql:
           global:
             postgresql:
