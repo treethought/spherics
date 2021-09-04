@@ -1,14 +1,11 @@
 # These default values can be overridden per environment in config/<env>.yaml files
 
-chart_version: "0.1.0"
+chart_version: "0.1.3"
 installed: true
 
-host: "pod.spherics.space"
+host: "pod.example.com"
 
 db:
   username: "diaspora"
   password: "diaspora"
 
-redis:
-  enabled: true
-  # password: "redis"
