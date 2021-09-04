@@ -15,7 +15,7 @@ diff:
   script:
     - helmfile repos
     - helmfile deps
-    - helmfile lint
+    # - helmfile lint 
     - helmfile diff
 
 deploy:
