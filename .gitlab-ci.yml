@@ -15,7 +15,7 @@ diff:
   script:
     - helmfile repos
     - helmfile deps
-    # - helmfile lint 
+    - helmfile lint 
     - helmfile diff
 
 deploy:
@@ -26,27 +26,3 @@ deploy:
   script:
     - helmfile apply
 
-
-# before_script:
-#     - apk add make
-
-# install base:
-#   stage: base
-#   environment:
-#     name: space
-#   script:
-#     - make nginx cert-manager
-
-# deploy gitea:
-#   stage: deploy
-#   environment:
-#     name: space/gitea
-#   script:
-#     - make gitea
-
-# deploy nextcloud:
-#   stage: deploy
-#   environment:
-#     name: space/nextcloud
-#   script:
-#     - make nextcloud
