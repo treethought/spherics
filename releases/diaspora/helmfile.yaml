@@ -32,7 +32,6 @@ releases:
         postgresql:
           global:
             postgresql:
-              postgresqlDatabase: gitea
               postgresqlUsername: {{ .Values.db.username | quote }}
               postgresqlPassword: {{ .Values.db.password | quote }}
         ingress:
