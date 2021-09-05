@@ -44,6 +44,8 @@ releases:
                 'overwriteprotocol' => 'https',
               );
 
+        cronjob:
+          enabled: true
 
         persistence:
           # Nextcloud Data (/var/www/html)
