@@ -1,6 +1,6 @@
 # These default values can be overridden per environment in config/<env>.yaml files
 
-chart_version: "0.1.1"
+chart_version: "0.1.2"
 installed: true
 
 host: "pod.example.com"
