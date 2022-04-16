@@ -4,15 +4,18 @@ stages:
 
 image: quay.io/roboll/helmfile:helm3-v0.140.0
 
-# TODO better workaround for environment limitation
-# currently need it set for cluster access
-# but jobs cannot have same environment
+variables:
+ KUBE_CONTEXT: "treethought/spherics:spherics-agent"
+
+.use_context: &use_context
+  - kubectl config get-contexts
+  - kubectl config use-context "$KUBE_CONTEXT"
+  - kubectl get pods
 
 diff:
   stage: diff
-  environment:
-    name: space
   script:
+    - *use_context
     - helmfile repos
     - helmfile deps
     - helmfile lint 
@@ -20,9 +23,8 @@ diff:
 
 deploy:
   stage: deploy
-  environment:
-    name: space
   when: manual
   script:
+    - *use_context
     - helmfile apply
 
