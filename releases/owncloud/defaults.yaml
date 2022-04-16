@@ -1,6 +1,6 @@
 # These default values can be overridden per environment in config/<env>.yaml files
 
-chart_version: "10.2.23"
+chart_version: "11.0.24"
 
 installed: true
 
