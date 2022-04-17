@@ -12,18 +12,18 @@ variables:
   - kubectl config use-context "$KUBE_CONTEXT"
   - kubectl get pods
 
-diff:
-  stage: diff
-  script:
-    - *use_context
-    - helmfile repos
-    - helmfile deps
-    - helmfile lint 
-    - helmfile diff
+# diff:
+#   stage: diff
+#   script:
+#     - *use_context
+#     - helmfile repos
+#     - helmfile deps
+#     - helmfile lint 
+#     - helmfile diff
 
 deploy:
   stage: deploy
-  when: manual
+  # when: manual
   script:
     - *use_context
     - helmfile apply

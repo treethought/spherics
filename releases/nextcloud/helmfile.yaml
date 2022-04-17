@@ -44,6 +44,26 @@ releases:
                 'overwriteprotocol' => 'https',
               );
 
+            s3.config.php: |-
+              <?php
+              $CONFIG = array (
+                'objectstore' => array(
+                  'class' => '\\OC\\Files\\ObjectStore\\S3',
+                  'arguments' => array(
+                    'bucket'     => {{ env "NEXTCLOUD_S3_BUCKET" | quote }},
+                    'autocreate' => true,
+                    'hostname'   => {{ env "NEXTCLOUD_S3_HOST" | quote}},
+                    'port'       => {{ env "NEXTCLOUD_S3_PORT" | default "443" | quote }},
+                    'key'        => {{ env "NEXTCLOUD_S3_KEY" | quote }},
+                    'secret'     => {{ env "NEXTCLOUD_S3_SECRET" | quote }},
+                    'region'     => {{ env "NEXTCLOUD_S3_REGION" | quote }},
+                    'use_ssl'    => true,
+                    // required for some non Amazon S3 implementations
+                    'use_path_style'=>true
+                  )
+                )
+              );
+
         cronjob:
           enabled: true
 

@@ -80,6 +80,16 @@ helmfiles:
   - path: releases/nextcloud/helmfile.yaml
     values:
       - host: nextcloud.spherics.space
+      - config:
+        s3:
+          enabled: "true"
+          bucket: {{ requiredEnv "NEXTCLOUD_S3_BUCKET"}}
+          key: {{ requiredEnv "NEXTCLOUD_S3_KEY"}}
+          secret: {{ requiredEnv "NEXTCLOUD_S3_SECRET"}}
+          region: {{ requiredEnv "NEXTCLOUD_S3_REGION"}}
+          hostname: storage.googleapis.com
+          port: 443
+
       - user:
           username: {{ requiredEnv "NEXTCLOUD_ADMIN_USERNAME"}}
           password: {{ requiredEnv "NEXTCLOUD_ADMIN_PASSWORD"}}
