@@ -70,7 +70,7 @@ releases:
           postgresqlDatabase: nextcloud
           persistence:
             enabled: true
-            size: 50Gi
+            size: 150Gi
 
         redis:
           enabled: true
