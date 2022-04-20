@@ -117,3 +117,6 @@ helmfiles:
   #     - host: pod.spherics.space
   #     - db:
   #         username: diaspora
+  #
+  # funkwhale:
+  - path: releases/funkwhale/helmfile.yaml

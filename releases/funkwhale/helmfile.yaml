@@ -1,0 +1,57 @@
+bases:
+- environments.yaml
+---
+repositories:
+- name: ananace-charts
+  url: https://ananace.gitlab.io/charts/
+
+releases:
+
+# gitea - Gitea is a painless self-hosted Git service. It is similar to GitHub, Bitbucket, and GitLab.
+# Gitea is a fork of Gogs. See the Gitea Announcement blog post to read about the justification for a fork.
+# https://docs.gitea.io
+# https://docs.gitea.io/en-us/install-on-kubernetes/
+# https://gitea.com/gitea/helm-chart/src/branch/master/values.yaml
+
+- name: "funkwhale"
+  namespace: "funkwhale"
+  labels:
+    chart: "funkwhale"
+    repo: "ananace-charts"
+    component: "funkwhale"
+    namespace: "funkwhale"
+    vendor: "ananace"
+  chart: "ananace-charts/funkwhale"
+  version: {{ .Values.chart_version | quote }}
+  wait: true
+  timeout: 300
+  atomic: true
+  cleanupOnFail: true
+  createNamespace: true
+  installed: {{ .Values.installed }}
+
+  values:
+    - postgresql:
+        postgresqlUsername: {{ requiredEnv "FUNKWHALE_DB_USERNAME"}}
+        postgresqlPassword: {{ requiredEnv "FUNKWHALE_DB_PASSWORD"}}
+      redis:
+        password: {{ requiredEnv "FUNKWHALE_REDIS_PASSWORD"}}
+
+      ingress:
+        enabled: true
+        host: w.spherics.space
+        tls:
+          - secretName: "w.spherics.space-tls"
+            hosts:
+              - w.spherics.space
+
+      s3:
+        enabled: "true"
+        bucket: {{ requiredEnv "FUNKWHALE_S3_BUCKET"}}
+        accessKey: {{ requiredEnv "FUNKWHALE_S3_KEY"}}
+        secretKey: {{ requiredEnv "FUNKWHALE_S3_SECRET"}}
+        region: {{ requiredEnv "FUNKWHALE_S3_REGION"}}
+        url: https://storage.googleapis.com
+
+      persistence:
+        enabled: true

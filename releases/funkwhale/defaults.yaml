@@ -1,0 +1,7 @@
+# These default values can be overridden per environment in config/<env>.yaml files
+
+chart_version: "0.4.7"
+
+installed: true
+
+
